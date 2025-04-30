@@ -1,10 +1,12 @@
+import sys
+import os
 import imaplib
 import smtplib
 import email
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from email.message import EmailMessage
 from config.email_settings import *
 from scripts.process_email import generate_response
-
 
 def connect_imap():
     M = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT)
