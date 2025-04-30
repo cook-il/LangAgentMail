@@ -20,3 +20,14 @@ This setup is intended to serve as a civic-grade template. The recommended deplo
 
 Future versions will build upon this foundation to add structured parsing, natural language understanding, request classification, and multi-turn semantic reply behavior.
 
+---
+
+## 📜 License
+
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+LangAgentMail is intended for use by individuals and civic groups whose goals align with the reference deployment at [cook-il.us](https://cook-il.us). This license permits full use, study, and modification, but **requires that any publicly hosted derivative works must also release their source code**.
+
+The AGPL-3.0 protects LangAgentMail from closed commercial forks and ensures that improvements remain available to the public.
+
+🔗 [View full license](https://www.gnu.org/licenses/agpl-3.0.html)
