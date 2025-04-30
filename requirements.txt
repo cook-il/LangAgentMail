@@ -1,1 +1,4 @@
-python-dotenv==1.1.0
+imaplib2
+smtplib
+email
+python-dotenv

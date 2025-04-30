@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+*.log
+data/
+logs/
+config/email_settings.py  # only if auto-generated or templated
