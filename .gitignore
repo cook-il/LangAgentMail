@@ -6,3 +6,4 @@ data/
 logs/
 config/email_settings.py  # only if auto-generated or templated
 venv/
+data/*.db
