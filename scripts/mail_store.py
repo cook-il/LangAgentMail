@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 # Database location: ../data/mailstore.db
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "mailstore.db")
+DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "mailstore.db"))
 
 def init_db():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
@@ -27,4 +27,24 @@ def store_message(sender, subject, received_at, raw_body):
             INSERT INTO messages (sender, subject, received_at, raw_body)
             VALUES (?, ?, ?, ?)
         """, (sender, subject, received_at, raw_body))
+        conn.commit()
+
+def get_pending_messages():
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, sender, subject, raw_body
+            FROM messages
+            WHERE status = 'pending'
+        """)
+        return cursor.fetchall()
+
+def mark_as_processed(message_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE messages
+            SET status = 'processed'
+            WHERE id = ?
+        """, (message_id,))
         conn.commit()
