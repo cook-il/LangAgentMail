@@ -1,4 +1,4 @@
-## 🗺️ Roadmap
+## 🗺️ Project Roadmap
 
 LangAgentMail follows a deliberate versioning plan tied to infrastructure, identity, and response capabilities.
 
@@ -8,17 +8,40 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 - SMTP relay via YunoHost with trusted domain/IPs
 - PGP identity + SSH-secured GitHub deploys
 - Signed commits and echo replies via info@cook-il.us
-- .env-based credential management
-- Virtualenv setup with reproducible requirements.txt
+- `.env`-based credential management
+- Virtualenv setup with reproducible `requirements.txt`
 
 ---
 
-### 🛠 v0.1.x — Command-aware Responses (Current)
-- Basic text normalization: strip HTML, CSS, JavaScript, images
+### ✅ v0.1.1 — Message Ingestion and HTML Sanitization (Done)
+- IMAP polling using unseen filter
+- SQLite-backed queue (`mailstore.db`) with message metadata
+- Normalization pipeline: strip HTML/CSS/JS, decode safely
+- Persistent status tracking (`pending`, `processed`)
+- Message preview and state updates via `post_process.py`
+
+---
+
+### 🟡 v0.1.2 — Command-aware Responses (Current)
 - Free-form command parsing (e.g. `/status`, `/help`)
 - Improved formatting of AI replies (clear prompts, inline context)
-- Manual message archival grouped by sender
+- Reply only to verified domains or whitelisted senders
 - Internal logging with source timestamps for traceability
+
+---
+
+### 🔜 v0.1.3 — Archival and Grouping
+- Archive processed messages by sender or domain
+- SQLite schema migration for labeling/tags
+- Manual export/review options for flagged content
+
+---
+
+### 🧠 v0.2.x — LangChain Integration
+- Transition from echo bot to document-aware agent
+- Embed select local documents per sender or query
+- Use LangChain + OpenAIEmbeddings (or local alternative)
+- Add `/ask`, `/query`, and `/resume` commands
 
 ---
 
