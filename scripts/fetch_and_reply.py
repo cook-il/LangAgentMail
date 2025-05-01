@@ -6,7 +6,9 @@ import email
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from email.message import EmailMessage
 from config.email_settings import *
-from scripts.process_email import generate_response
+# from scripts.process_email import generate_response
+from scripts.process_email import extract_clean_text
+
 
 def connect_imap():
     M = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT)
@@ -43,12 +45,13 @@ def process_inbox():
             else:
                 body = "[No plain text body found]"
         else:
-            body = msg.get_payload(decode=True).decode(msg.get_content_charset() or 'utf-8')
+            body = extract_clean_text(msg)
 
-        response = generate_response(subject, body)
+        response = f"Your message was received and processed:\n\n{body}"
 
         reply = EmailMessage()
-        reply["Subject"] = f"Re: {subject}"
+        clean_subject = subject.replace('\n', ' ').replace('\r', ' ').strip()
+        reply["Subject"] = f"Re: {clean_subject}"
         reply["From"] = FROM_ADDRESS
         reply["To"] = from_address
         reply["Reply-To"] = REPLY_TO
@@ -71,7 +74,8 @@ import smtplib
 import email
 from email.message import EmailMessage
 from config.email_settings import *
-from scripts.process_email import generate_response
+# from scripts.process_email import generate_response
+from scripts.process_email import extract_clean_text
 
 
 def connect_imap():
