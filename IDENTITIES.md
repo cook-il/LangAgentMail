@@ -1,40 +1,32 @@
-## ðŸ“Œ Reserved Identity: law@cook-il.us
+# Reserved Email Identities – LangAgentMail
 
-**Label:** `law@cook-il.us`  
-**Status:** Unassigned  
-**Purpose:** To act as the controlling identity behind the `abuse@cook-il.us` alias, ideally operated by a qualified legal actor (lawyer, law firm, or independent compliance officer).
+This file documents all active and reserved email addresses under the `cook-il.us` domain used by the LangAgentMail system. These identities are part of a structured namespace aligned with TheRON and civic-grade digital services.
 
-**Current State:**  
-- No mailbox or system account has been created.  
-- No PGP or SSH keys assigned.  
-- Not mapped to `abuse@cook-il.us` (yet).  
-- No implementation decisions have been made.  
+---
 
-**Tracking Tag:** `langagent/abuse/identity/law-unassigned`
+## ? Active Identities
 
-### Discussion
+All active email addresses below are routed to the `aiagent` mailbox. Some are aliases required by RFC 2142 and related standards.
 
-The designation of `law@cook-il.us` remains **unassigned by design**, reflecting the legal and operational complexity of assigning authority over the `abuse@cook-il.us` alias. While `info@` and `aiagent@` are internally governed and tied to infrastructure ownership, `abuse@` must carry legal weight and impartiality.
+| Email                  | Purpose                                      |
+|------------------------|----------------------------------------------|
+| aiagent@cook-il.us     | Primary account and sender identity          |
+| info@cook-il.us        | Public-facing AI request entrypoint (alias) |
+| ai@cook-il.us          | Reply alias for AI responses (alias)        |
+| postmaster@cook-il.us  | RFC-required alias, routed to aiagent        |
+| admin@cook-il.us       | RFC-required alias, routed to aiagent        |
+| root@cook-il.us        | RFC-required alias, routed to aiagent        |
+| abuse@cook-il.us       | RFC-required alias, routed to aiagent        |
+| webmaster@cook-il.us   | RFC-required alias, routed to aiagent        |
 
-Assigning a single identity like `law@cook-il.us` risks oversimplifying the necessary distinctions between:
+---
 
-- **State law** (Illinois-specific ordinances or administrative law)
-- **Federal law** (FTC, FCC, and constitutional matters)
-- **Specialized law** (e.g., digital rights, consumer protection, civil rights)
-- **Segment law** (niche or emerging areas, such as zoning automation or AI-generated records)
+## ? Reserved for Future Development
 
-A future legal structure may need to differentiate between:
+A sample of reserved identities, for specialized roles in public infrastructure and thematic pillars of Civilization. They are not currently active, and they are protected from conflicting use.
 
-- `state-law@cook-il.us`
-- `federal-law@cook-il.us`
-- `privacy-law@cook-il.us`
-- `zoning-law@cook-il.us`
-- `audit@cook-il.us` (internal or ombudsman role)
-
-These cannot be prematurely collapsed under `law@`, which currently represents an **unassigned legal root**. Its placeholder status allows the project to:
-
-- Invite legal critique without presuming jurisdictional scope
-- Maintain RFC compliance via `abuse@`, without violating ethical boundaries
-- Delay implementation until the role can be filled by a person or organization that understands and accepts the structural responsibility
-
-**Until such time**, `law@cook-il.us` exists as a reserved namespace, acknowledged but not active.
+| Email                   | Designation               | Notes |
+|-------------------------|---------------------------|-------|
+| medicine@cook-il.us     | Pillar of Civilization    | Reserved for public health systems, knowledge, and ethics |
+| government@cook-il.us   | Pillar of Civilization    | Reserved for policy, regulatory interpretation, and civic governance |
+| law@cook-il.us          | Pillar of Civilization    | Reserved for legal standards, dispute resolution, and institutional analysis |
