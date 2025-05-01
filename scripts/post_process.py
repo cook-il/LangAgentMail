@@ -3,7 +3,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from scripts.mail_store import get_pending_messages, mark_as_processed
-from scripts.command_parser import detect_command, generate_response
+from scripts.command_parser import detect_command, generate_response, is_allowed_sender
 
 def run_post_processing():
     messages = get_pending_messages()
@@ -23,6 +23,12 @@ def run_post_processing():
             print(f"[COMMAND: /{command}] Respond with:\n{reply_text}\n")
         else:
             print(f"[No command detected in ID {msg_id}]")
+
+        if not is_allowed_sender(sender):
+            print(f"[BLOCKED] Sender '{sender}' is not allowed to issue commands.\n")
+            mark_as_processed(msg_id)
+            continue
+
 
 if __name__ == "__main__":
     run_post_processing()

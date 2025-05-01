@@ -21,3 +21,12 @@ def generate_response(command):
     )
 
     return "❓ Unknown command."
+
+def is_allowed_sender(sender):
+    allowed_domains = [
+        "cook-il.us",
+        "kane-il.us",
+        "dupage-il.us",
+    ]
+    domain = sender.split("@")[-1].lower()
+    return any(domain.endswith(allowed) for allowed in allowed_domains)
