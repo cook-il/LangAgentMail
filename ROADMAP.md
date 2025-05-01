@@ -2,20 +2,23 @@
 
 LangAgentMail follows a deliberate versioning plan tied to infrastructure, identity, and response capabilities.
 
-### ✅ v0.0.9 — Infrastructure Milestone (Current)
+### ✅ v0.0.9 — Infrastructure Milestone (Done)
 - RFC-compliant DNS + mail routing (BIND, SPF, DKIM, DMARC)
 - Working dual-stack IPv4/IPv6 with TCP/UDP
 - SMTP relay via YunoHost with trusted domain/IPs
 - PGP identity + SSH-secured GitHub deploys
+- Signed commits and echo replies via info@cook-il.us
+- .env-based credential management
+- Virtualenv setup with reproducible requirements.txt
 
 ---
 
-### 🛠 v0.1.x — Command-aware Responses
-- Basic text normalization, stripping HTML/CSS/graphics
+### 🛠 v0.1.x — Command-aware Responses (Current)
+- Basic text normalization: strip HTML, CSS, JavaScript, images
 - Free-form command parsing (e.g. `/status`, `/help`)
-- Improved reply formatting
+- Improved formatting of AI replies (clear prompts, inline context)
 - Manual message archival grouped by sender
-- Internal logging with source timestamps
+- Internal logging with source timestamps for traceability
 
 ---
 
