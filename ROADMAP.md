@@ -7,7 +7,6 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 - Working dual-stack IPv4/IPv6 with TCP/UDP
 - SMTP relay via YunoHost with trusted domain/IPs
 - PGP identity + SSH-secured GitHub deploys
-- Signed commits and echo replies via `info@cook-il.us`
 
 ---
 
@@ -42,21 +41,11 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 - Localized models (optional)
 - Tested compatibility with multiple subdomains and isolated agents
 
-# langagent/pgp/roadmap/deferred-v1
+---
 
-## 🔁 Post-MVP Security Enhancements
+### 🔁 Deferred Items
 
-### PGP Signing for Automated Replies
-
-**Status:** Deferred  
-**Component:** LangAgentMail (`aiagent@cook-il.us`)  
-**Reason:** PGP signing via Roundcube (Enigma) is working for webmail replies, but system-generated messages sent via remote shell or cron bypass signing.  
-
-**Planned Action:**  
-Implement cryptographic signing of all automated messages using `gpg --clearsign`, `mutt`, or wrapper scripts.
-
-**Trigger for Reinstatement:**  
-After LangAgentMail's reply automation and message routing are stable.
-
-**Note:**  
-This does not impact current public-facing replies from `info@cook-il.us`, which are already PGP-signed and verified.
+- **Signed commits and echo replies via `info@cook-il.us`**  
+  Status: **Deferred**  
+  Reason: PGP signing works in Roundcube for webmail, but not yet implemented for automated replies from `aiagent` or non-interactive scripts.  
+  Will be reinstated once LangAgentMail reply automation is finalized and GPG integration extended to backend processes.
