@@ -18,6 +18,20 @@ def init_db():
                 status TEXT DEFAULT 'pending'
             );
         """)
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS replies (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                message_id INTEGER NOT NULL,
+                recipient TEXT NOT NULL,
+                subject TEXT,
+                reply_body TEXT NOT NULL,
+                status TEXT DEFAULT 'queued',
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (message_id) REFERENCES messages(id)
+            );
+        """)
+
         conn.commit()
 
 def store_message(sender, subject, received_at, raw_body):
@@ -47,4 +61,13 @@ def mark_as_processed(message_id):
             SET status = 'processed'
             WHERE id = ?
         """, (message_id,))
+        conn.commit()
+
+def queue_reply(message_id, recipient, subject, reply_body, created_at):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO replies (message_id, recipient, subject, reply_body, created_at)
+            VALUES (?, ?, ?, ?, ?)
+        """, (message_id, recipient, subject, reply_body, created_at))
         conn.commit()
