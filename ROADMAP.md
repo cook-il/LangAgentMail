@@ -22,7 +22,7 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🟡 v0.1.2 — Command-aware Responses (Current)
+### ✅ v0.1.2 — Command-aware Responses (Done)
 - Free-form command parsing (e.g. `/status`, `/help`)
 - Improved formatting of AI replies (clear prompts, inline context)
 - Reply only to verified domains or whitelisted senders
@@ -39,19 +39,21 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🟡 v0.1.4 — Archiving and Tagging (Current)
-- Archive processed messages grouped by sender or domain
-- Add optional tags/labels column to `messages` table
-- Export logs for audit, export, or retraining
-- Begin support for `/log`, `/history`, or `/mine` commands
+### ✅ v0.1.4 — Archiving and Tagging (Done)
+- `messages` table now includes `archived_at` and `tag`
+- `/mine` command archives all prior messages from sender
+- Tag format: `mine-localpart` (e.g., `mine-theron`)
+- Updated `/help` to reflect new command set
 
 ---
 
-### 🧠 v0.2.x — LangChain Integration
-- Transition from echo bot to document-aware agent
-- Embed select local documents per sender or query
-- Use LangChain + OpenAIEmbeddings (or local alternative)
-- Add `/ask`, `/query`, and `/resume` commands
+### 🟡 v0.2.x — LangChain Integration (Current)
+- Begin using LangChain agents and memory components
+- Load archived messages as user-specific context
+- Enable smarter responses based on message history
+- AI replies enhanced with prior interactions and prompts
+- Prepare for optional RAG (retrieval-augmented generation)
+
 
 ---
 
