@@ -116,3 +116,21 @@ def archive_message(msg_id, tag=None):
             WHERE id = ?
         """, (datetime.now(timezone.utc).isoformat(), tag, msg_id))
         conn.commit()
+
+def archive_all_from_sender(sender_email):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        tag = f"mine-{sender_email.split('@')[0]}"
+        now = datetime.now(timezone.utc).isoformat()
+
+        cursor.execute("""
+            UPDATE messages
+            SET status = 'archived',
+                archived_at = ?,
+                tag = COALESCE(?, tag)
+            WHERE sender LIKE ?
+              AND status != 'archived'
+        """, (now, tag, f"%{sender_email}%"))
+
+        conn.commit()
+        return cursor.rowcount  # number of rows archived

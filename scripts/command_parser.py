@@ -5,23 +5,31 @@ def detect_command(text):
     """Return the normalized command if found, else None."""
     lines = text.lower().splitlines()
     for line in lines:
-        if line.strip().startswith("/status"):
+        line = line.strip()
+        if line.startswith("/status"):
             return "status"
-        elif line.strip().startswith("/help"):
+        elif line.startswith("/help"):
             return "help"
+        elif line.startswith("/mine"):
+            return "mine"
     return None
 
 def generate_response(command):
     if command == "status":
         return "✅ LangAgentMail is online and responding to approved queries."
+    elif command == "mine":
+        return "🗃 Archiving all your messages. Please wait..."
     elif command == "help":
         return (
-        "🆘 Available commands:\n"
-        "  /status - Check system status\n"
-        "  /help   - List available commands\n"
-        "\n"
-        "Email info@cook-il.us with questions or suggestions."
-    )
+            "🆘 Available commands:\n"
+            "  /status - Check system status\n"
+            "  /help   - List available commands\n"
+            "  /mine   - Archive all your previously sent messages\n"
+            "\n"
+            "LangAgentMail v0.1.4 — Archiving and Tagging in progress.\n"
+            "Email info@cook-il.us with questions or suggestions."
+        )
+
 
     return "❓ Unknown command."
 
