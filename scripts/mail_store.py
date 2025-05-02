@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from datetime import datetime, timezone
 
 # Database location: ../data/mailstore.db
 DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "mailstore.db"))
@@ -13,9 +14,11 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 sender TEXT NOT NULL,
                 subject TEXT,
-                received_at TEXT NOT NULL,
-                raw_body TEXT,
-                status TEXT DEFAULT 'pending'
+                body TEXT,
+                status TEXT DEFAULT 'pending',
+                tag TEXT,
+                archived_at TEXT,
+                received_at TEXT
             );
         """)
 
@@ -34,20 +37,20 @@ def init_db():
 
         conn.commit()
 
-def store_message(sender, subject, received_at, raw_body):
+def store_message(sender, subject, received_at, body):
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO messages (sender, subject, received_at, raw_body)
+            INSERT INTO messages (sender, subject, received_at, body)
             VALUES (?, ?, ?, ?)
-        """, (sender, subject, received_at, raw_body))
+        """, (sender, subject, received_at, body))
         conn.commit()
 
 def get_pending_messages():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT id, sender, subject, raw_body
+            SELECT id, sender, subject, body
             FROM messages
             WHERE status = 'pending'
         """)
@@ -90,4 +93,26 @@ def mark_reply_sent(reply_id):
             SET status = 'sent'
             WHERE id = ?
         """, (reply_id,))
+        conn.commit()
+
+def tag_message(msg_id, tag):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE messages
+            SET tag = ?
+            WHERE id = ?
+        """, (tag, msg_id))
+        conn.commit()
+
+def archive_message(msg_id, tag=None):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE messages
+            SET status = 'archived',
+                archived_at = ?,
+                tag = COALESCE(?, tag)
+            WHERE id = ?
+        """, (datetime.now(timezone.utc).isoformat(), tag, msg_id))
         conn.commit()
