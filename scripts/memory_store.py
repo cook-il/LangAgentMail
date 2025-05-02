@@ -38,3 +38,14 @@ def get_memory(sender, key):
         """, (sender, key.strip()))
         row = cursor.fetchone()
         return row[0] if row else None
+
+def list_keys(sender):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT DISTINCT key FROM memory
+            WHERE sender = ?
+            ORDER BY key ASC
+        """, (sender,))
+        rows = cursor.fetchall()
+        return [row[0] for row in rows]

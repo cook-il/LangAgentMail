@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from scripts.langchain_agent.agent_core import generate_langchain_response
 from scripts.mail_store import get_message_history
-from scripts.memory_store import store_memory
-from scripts.memory_store import get_memory
+from scripts.memory_store import store_memory, get_memory, list_keys
+
 
 from scripts.mail_store import (
     get_pending_messages,
@@ -63,6 +63,13 @@ def run_post_processing():
                         reply_text = f"📌 {query_key}: {value}"
                     else:
                        reply_text = f"🤔 No memory found for '{query_key}'."
+
+                elif command == "recall":
+                    keys = list_keys(sender)
+                    if keys:
+                        reply_text = "🧾 Stored keys:\n- " + "\n- ".join(keys)
+                    else:
+                        reply_text = "📭 You haven’t stored any memory yet."
 
                 else:
                     reply_text = generate_response(command)
