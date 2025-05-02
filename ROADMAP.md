@@ -30,10 +30,20 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🔜 v0.1.3 — Archival and Grouping
-- Archive processed messages by sender or domain
-- SQLite schema migration for labeling/tags
-- Manual export/review options for flagged content
+### ✅ v0.1.3 — Reply Queuing and Delivery (Done)
+- Replies stored in SQLite (`replies` table)
+- Includes sender, subject, and reply content
+- Secure delivery using `smtplib` and STARTTLS
+- Regex-based parsing of sender from "Name 'email'"
+- Only whitelisted domains are allowed to receive replies
+
+---
+
+### 🟡 v0.1.4 — Archiving and Tagging (Current)
+- Archive processed messages grouped by sender or domain
+- Add optional tags/labels column to `messages` table
+- Export logs for audit, export, or retraining
+- Begin support for `/log`, `/history`, or `/mine` commands
 
 ---
 
