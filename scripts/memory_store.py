@@ -27,3 +27,14 @@ def store_memory(sender, key, value):
             VALUES (?, ?, ?, ?)
         """, (sender, key.strip(), value.strip(), datetime.now(timezone.utc).isoformat()))
         conn.commit()
+
+def get_memory(sender, key):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT value FROM memory
+            WHERE sender = ? AND key = ?
+            ORDER BY created_at DESC LIMIT 1
+        """, (sender, key.strip()))
+        row = cursor.fetchone()
+        return row[0] if row else None

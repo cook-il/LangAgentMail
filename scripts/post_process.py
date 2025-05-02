@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from scripts.langchain_agent.agent_core import generate_langchain_response
 from scripts.mail_store import get_message_history
 from scripts.memory_store import store_memory
+from scripts.memory_store import get_memory
 
 from scripts.mail_store import (
     get_pending_messages,
@@ -54,6 +55,14 @@ def run_post_processing():
                         reply_text = f"📝 Remembered '{key.strip()}' = \"{value.strip()}\""
                     else:
                         reply_text = "⚠️ Invalid format. Use /remember key: value"
+
+                elif command.startswith("query "):
+                    query_key = command.split(" ", 1)[1].strip()
+                    value = get_memory(sender, query_key)
+                    if value:
+                        reply_text = f"📌 {query_key}: {value}"
+                    else:
+                       reply_text = f"🤔 No memory found for '{query_key}'."
 
                 else:
                     reply_text = generate_response(command)
