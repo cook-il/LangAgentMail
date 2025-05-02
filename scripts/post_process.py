@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from scripts.langchain_agent.agent_core import generate_langchain_response
 from scripts.mail_store import get_message_history
+from scripts.memory_store import store_memory
 
 from scripts.mail_store import (
     get_pending_messages,
@@ -44,6 +45,15 @@ def run_post_processing():
                 elif command in ["ask", "ai"]:
                     history = get_message_history(sender)
                     reply_text = generate_langchain_response(sender, body, history, subject=subject)
+
+                elif command.startswith("remember "):
+                    parts = command.split(" ", 1)[1].split(":", 1)
+                    if len(parts) == 2:
+                        key, value = parts
+                        store_memory(sender, key, value)
+                        reply_text = f"📝 Remembered '{key.strip()}' = \"{value.strip()}\""
+                    else:
+                        reply_text = "⚠️ Invalid format. Use /remember key: value"
 
                 else:
                     reply_text = generate_response(command)
