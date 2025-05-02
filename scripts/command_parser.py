@@ -2,7 +2,6 @@ import re
 from config.email_settings import ALLOWED_DOMAINS
 
 def detect_command(text):
-    """Return the normalized command if found, else None."""
     lines = text.lower().splitlines()
     for line in lines:
         line = line.strip()
@@ -12,6 +11,11 @@ def detect_command(text):
             return "help"
         elif line.startswith("/mine"):
             return "mine"
+        elif line.startswith("/ask") or line.startswith("/ai"):
+            return "ask"
+        elif line.startswith("/tag"):
+            parts = line.split()
+            return f"tag:{parts[1]}" if len(parts) > 1 else "tag"
     return None
 
 def generate_response(command):
@@ -25,6 +29,8 @@ def generate_response(command):
             "  /status - Check system status\n"
             "  /help   - List available commands\n"
             "  /mine   - Archive all your previously sent messages\n"
+            "  /ask    - Query AI with context-aware response\n"
+            "  /tag <label> - Assign a tag to this message and archive it\n"
             "\n"
             "LangAgentMail v0.1.4 — Archiving and Tagging in progress.\n"
             "Email info@cook-il.us with questions or suggestions."

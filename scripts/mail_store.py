@@ -134,3 +134,17 @@ def archive_all_from_sender(sender_email):
 
         conn.commit()
         return cursor.rowcount  # number of rows archived
+
+def get_message_history(sender, limit=5):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT body FROM messages
+            WHERE sender LIKE ?
+              AND status = 'archived'
+              AND body IS NOT NULL
+            ORDER BY received_at DESC
+            LIMIT ?
+        """, (f"%{sender}%", limit))
+        rows = cursor.fetchall()
+        return [r[0] for r in rows]

@@ -10,7 +10,10 @@ from scripts.mail_store import (
     mark_as_processed,
     queue_reply,
     archive_all_from_sender,
+    get_message_history,
+    archive_message,
 )
+
 from scripts.command_parser import detect_command, generate_response, is_allowed_sender
 
 def run_post_processing():
@@ -35,6 +38,11 @@ def run_post_processing():
             elif command in ["ask", "ai"]:
                 history = get_message_history(sender)
                 reply_text = generate_langchain_response(sender, body, history, subject=subject)
+
+            elif command.startswith("tag:"):
+                tag_label = command.split(":", 1)[1]
+                archive_message(msg_id, tag=tag_label)
+                reply_text = f"🏷️ Message tagged as '{tag_label}' and archived."
 
             else:
                 reply_text = generate_response(command)
