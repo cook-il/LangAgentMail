@@ -64,18 +64,21 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🟡 v0.2.2 — User-defined Tags & Command Chaining (Next)
-- Support `/tag something` to apply custom tags to archived messages
-- Enable command chaining: `/mine && /status`, etc.
-- Begin concept of user profiles or per-domain behavior presets
+### ✅ v0.2.2 — Tag and Chain (Done)
+- Support for `/tag <label>` to manually archive with a label
+- Command chaining via `&&` and `||` (`/mine && /status`)
+- Robust command parsing with sender validation
 
 ---
 
-### 🔐 v0.3.x — Audit & Access Layer
-- Cryptographically verifiable message logs
-- Optional GPG key pinning for inbound messages
-- Role-based controls for subdomain users
-- API gateway compatibility for non-email access
+### 🔜 v0.3.0 — Knowledge Indexing (Next)
+- Ingest normalized text via email body or pasted message
+- Recognize and respond with structured formats:
+  - Gemini (=> links)
+  - Markdown (headers, lists, formatting)
+  - DocuWiki and plain Wiki syntax
+- Begin `/remember`, `/query`, and `/link` command support
+- Retrieval-Augmented Generation (RAG) based on plain Unicode text
 
 ---
 
