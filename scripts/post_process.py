@@ -2,6 +2,8 @@ import sys
 import os
 from datetime import datetime, timezone
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from scripts.langchain_agent.agent_core import generate_langchain_response
+from scripts.mail_store import get_message_history
 
 from scripts.mail_store import (
     get_pending_messages,
@@ -29,6 +31,11 @@ def run_post_processing():
             if command == "mine":
                 archived_count = archive_all_from_sender(sender)
                 reply_text = f"? Archived {archived_count} messages from {sender}"
+
+            elif command in ["ask", "ai"]:
+                history = get_message_history(sender)
+                reply_text = generate_langchain_response(sender, body, history, subject=subject)
+
             else:
                 reply_text = generate_response(command)
 
