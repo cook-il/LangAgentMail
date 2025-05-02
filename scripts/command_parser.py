@@ -1,22 +1,28 @@
 import re
 from config.email_settings import ALLOWED_DOMAINS
 
-def detect_command(text):
+def detect_commands(text):
     lines = text.lower().splitlines()
+    commands = []
     for line in lines:
         line = line.strip()
-        if line.startswith("/status"):
-            return "status"
-        elif line.startswith("/help"):
-            return "help"
-        elif line.startswith("/mine"):
-            return "mine"
-        elif line.startswith("/ask") or line.startswith("/ai"):
-            return "ask"
-        elif line.startswith("/tag"):
-            parts = line.split()
-            return f"tag:{parts[1]}" if len(parts) > 1 else "tag"
-    return None
+        if line.startswith("/"):
+            if "&&" in line or "||" in line:
+                chain = [cmd.strip() for cmd in re.split(r"&&|\|\|", line)]
+            else:
+                chain = [line]
+
+            for cmd in chain:
+                cmd = cmd.strip().lstrip("/")
+                if cmd.startswith("tag "):  # Normalize /tag <label> to tag:<label>
+                    parts = cmd.split(" ", 1)
+                    if len(parts) > 1:
+                        commands.append(f"tag:{parts[1]}")
+                else:
+                    commands.append(cmd)
+            break
+    return commands
+
 
 def generate_response(command):
     if command == "status":

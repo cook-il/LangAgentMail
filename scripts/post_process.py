@@ -14,7 +14,7 @@ from scripts.mail_store import (
     archive_message,
 )
 
-from scripts.command_parser import detect_command, generate_response, is_allowed_sender
+from scripts.command_parser import detect_commands, generate_response, is_allowed_sender
 
 def run_post_processing():
     messages = get_pending_messages()
@@ -29,33 +29,34 @@ def run_post_processing():
             mark_as_processed(msg_id)
             continue
 
-        command = detect_command(body)
-        if command:
-            if command == "mine":
-                archived_count = archive_all_from_sender(sender)
-                reply_text = f"? Archived {archived_count} messages from {sender}"
+        commands = detect_commands(body)
+        if commands:
+            for command in commands:
+                if command == "mine":
+                    archived_count = archive_all_from_sender(sender)
+                    reply_text = f"🗃 Archived {archived_count} messages from {sender}"
 
-            elif command in ["ask", "ai"]:
-                history = get_message_history(sender)
-                reply_text = generate_langchain_response(sender, body, history, subject=subject)
+                elif command.startswith("tag:"):
+                    tag_label = command.split(":", 1)[1]
+                    archive_message(msg_id, tag=tag_label)
+                    reply_text = f"🏷️ Message tagged as '{tag_label}' and archived."
 
-            elif command.startswith("tag:"):
-                tag_label = command.split(":", 1)[1]
-                archive_message(msg_id, tag=tag_label)
-                reply_text = f"🏷️ Message tagged as '{tag_label}' and archived."
+                elif command in ["ask", "ai"]:
+                    history = get_message_history(sender)
+                    reply_text = generate_langchain_response(sender, body, history, subject=subject)
 
-            else:
-                reply_text = generate_response(command)
+                else:
+                    reply_text = generate_response(command)
 
-            print(f"[COMMAND: /{command}] Respond with:\n{reply_text}\n")
+                print(f"[COMMAND: /{command}] Respond with:\n{reply_text}\n")
 
-            queue_reply(
-                message_id=msg_id,
-                recipient=sender,
-                subject=f"Re: {subject.strip()}",
-                reply_body=reply_text,
-                created_at=datetime.now(timezone.utc).isoformat()
-            )
+                queue_reply(
+                    message_id=msg_id,
+                    recipient=sender,
+                    subject=f"Re: {subject.strip()}",
+                    reply_body=reply_text,
+                    created_at=datetime.now(timezone.utc).isoformat()
+                )
         else:
             print(f"[No command detected in ID {msg_id}]")
 
