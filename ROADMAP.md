@@ -47,21 +47,20 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🟡 v0.2.x — LangChain Integration (Current)
-- Begin using LangChain agents and memory components
-- Load archived messages as user-specific context
-- Enable smarter responses based on message history
-- AI replies enhanced with prior interactions and prompts
-- Prepare for optional RAG (retrieval-augmented generation)
-
+### ✅ v0.2.0 — LangChain Integration (Done)
+- `/ask` and `/ai` commands now routed through LangChain
+- Uses up to 5 prior messages from the sender as context
+- Archived messages tagged and passed as prompt input
+- Modern LangChain syntax: `prompt | llm`, `.invoke()`, `.content`
+- Foundation laid for full RAG pipeline with FAISS/Chroma
 
 ---
 
-### 🧠 v0.2.x — LangChain Integration
-- Embedding via OpenAI or self-hosted LLMs
-- Query classification and memory-aware replies
-- Context chaining across multi-turn instructions
-- Publicly queryable conversation snapshots (optional)
+### 🔜 v0.2.1 — Contextual Prompt Engineering (Next)
+- Improve formatting and tone of LangChain replies
+- Use email subject + inferred intent in prompt template
+- Add prompt injection protections and minimum fallback
+- Start prototyping support for per-domain memory profiles
 
 ---
 
