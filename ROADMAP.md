@@ -71,14 +71,18 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🔜 v0.3.0 — Knowledge Indexing (Next)
-- Ingest normalized text via email body or pasted message
-- Recognize and respond with structured formats:
-  - Gemini (=> links)
-  - Markdown (headers, lists, formatting)
-  - DocuWiki and plain Wiki syntax
-- Begin `/remember`, `/query`, and `/link` command support
-- Retrieval-Augmented Generation (RAG) based on plain Unicode text
+### ✅ v0.3.0-alpha — Structured Memory (Done)
+- `/remember key: value` stores structured memory per sender
+- `/query key` retrieves last stored value for that key
+- Memory backed by SQLite, scoped by sender email
+- Plain Unicode only — no PDFs, HTML, or attachments
+
+---
+
+### 🔜 v0.3.1 — Memory Tools (Next)
+- `/recall` to list known keys for the sender
+- `/forget key` to delete individual entries
+- `/link topic` for Gemini/Markdown-style response linking
 
 ---
 
