@@ -1,3 +1,6 @@
+import re
+from config.email_settings import ALLOWED_DOMAINS
+
 def detect_command(text):
     """Return the normalized command if found, else None."""
     lines = text.lower().splitlines()
@@ -23,10 +26,11 @@ def generate_response(command):
     return "❓ Unknown command."
 
 def is_allowed_sender(sender):
-    allowed_domains = [
-        "cook-il.us",
-        "kane-il.us",
-        "dupage-il.us",
-    ]
-    domain = sender.split("@")[-1].lower()
-    return any(domain.endswith(allowed) for allowed in allowed_domains)
+    match = re.search(r'<([^>]+)>', sender)
+    email = match.group(1) if match else sender
+
+    if "@" not in email:
+        return False
+
+    domain = email.split("@")[-1].lower()
+    return any(domain.endswith(allowed) for allowed in ALLOWED_DOMAINS)

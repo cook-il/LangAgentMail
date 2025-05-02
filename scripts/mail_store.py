@@ -71,3 +71,23 @@ def queue_reply(message_id, recipient, subject, reply_body, created_at):
             VALUES (?, ?, ?, ?, ?)
         """, (message_id, recipient, subject, reply_body, created_at))
         conn.commit()
+
+def get_queued_replies():
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, recipient, subject, reply_body
+            FROM replies
+            WHERE status = 'queued'
+        """)
+        return cursor.fetchall()
+
+def mark_reply_sent(reply_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE replies
+            SET status = 'sent'
+            WHERE id = ?
+        """, (reply_id,))
+        conn.commit()
