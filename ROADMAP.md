@@ -72,17 +72,24 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 ---
 
 ### ✅ v0.3.0-alpha — Structured Memory (Done)
-- `/remember key: value` stores structured memory per sender
-- `/query key` retrieves last stored value for that key
-- Memory backed by SQLite, scoped by sender email
-- Plain Unicode only — no PDFs, HTML, or attachments
+- `/remember key: value` stores memory scoped by sender
+- `/query key` retrieves value for key if present
 
 ---
 
-### 🔜 v0.3.1 — Memory Tools (Next)
-- `/recall` to list known keys for the sender
-- `/forget key` to delete individual entries
-- `/link topic` for Gemini/Markdown-style response linking
+### ✅ v0.3.1 — Memory Tools (Done)
+- `/recall` lists memory keys stored by sender
+- `/forget key` deletes a specific memory entry
+- All memory interactions backed by SQLite
+
+---
+
+### 🔜 v0.3.2 — Referenced Replies (Next)
+- `/link topic` will return structured references:
+  - Gemini format: `=> /docs/topic.gmi`
+  - Markdown: `[topic](/docs/topic.md)`
+- Memory entries may be tagged as linkable
+- First steps toward interlinked knowledge base
 
 ---
 
