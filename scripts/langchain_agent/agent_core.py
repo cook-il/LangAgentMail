@@ -1,17 +1,19 @@
-from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
-# This will later receive messages + optional history
+# New standard uses 'Runnable' chaining with | operator
 def generate_langchain_response(sender, body, history=None):
     history_text = "\n".join(history or [])
     prompt = PromptTemplate.from_template(
         "Prior messages from {sender}:\n{history}\n\nCurrent message:\n{body}\n\nReply:"
     )
 
-    chain = LLMChain(
-        llm=ChatOpenAI(temperature=0, model="gpt-3.5-turbo"),
-        prompt=prompt,
-    )
+    chain = prompt | ChatOpenAI(temperature=0, model="gpt-3.5-turbo")
 
-    return chain.run(sender=sender, body=body, history=history_text)
+    result = chain.invoke({
+        "sender": sender,
+        "body": body,
+        "history": history_text
+    })
+
+    return result.content
