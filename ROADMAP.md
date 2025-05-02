@@ -56,11 +56,18 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🔜 v0.2.1 — Contextual Prompt Engineering (Next)
-- Improve formatting and tone of LangChain replies
-- Use email subject + inferred intent in prompt template
-- Add prompt injection protections and minimum fallback
-- Start prototyping support for per-domain memory profiles
+### ✅ v0.2.1 — Prompt Engineering (Done)
+- Prompts now include subject, sender, and message history
+- AI replies use consistent, polite, minimal tone
+- Replies remain graceful when no prior messages exist
+- Controlled hallucination acts as privacy shield
+
+---
+
+### 🟡 v0.2.2 — User-defined Tags & Command Chaining (Next)
+- Support `/tag something` to apply custom tags to archived messages
+- Enable command chaining: `/mine && /status`, etc.
+- Begin concept of user profiles or per-domain behavior presets
 
 ---
 
