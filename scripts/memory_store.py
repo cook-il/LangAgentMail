@@ -49,3 +49,12 @@ def list_keys(sender):
         """, (sender,))
         rows = cursor.fetchall()
         return [row[0] for row in rows]
+
+def forget_key(sender, key):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            DELETE FROM memory WHERE sender = ? AND key = ?
+        """, (sender, key.strip()))
+        conn.commit()
+        return cursor.rowcount  # returns # of deleted rows
