@@ -84,12 +84,13 @@ LangAgentMail follows a deliberate versioning plan tied to infrastructure, ident
 
 ---
 
-### 🔜 v0.3.2 — Referenced Replies (Next)
-- `/link topic` will return structured references:
-  - Gemini format: `=> /docs/topic.gmi`
-  - Markdown: `[topic](/docs/topic.md)`
-- Memory entries may be tagged as linkable
-- First steps toward interlinked knowledge base
+### ✅ v0.3.2 — RAG Data Contribution (Current)
+- Introduced `/ragfact <statement>` for storing verified, admin-submitted facts.
+- Introduced `/raglink <description>` for linking public knowledge to RAG database.
+- Entries stored in the `knowledge_base` table and default to unapproved.
+- Only contributors with admin-trusted domains may submit facts or links.
+- Establishes foundational logic for scalable retrieval-augmented generation (RAG).
+- Continues support for all existing commands, including `/tag`, `/mine`, `/ask`, and `/status`.
 
 ---
 
