@@ -3,7 +3,7 @@ import os
 from datetime import datetime, timezone
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from scripts.langchain_agent.agent_core import generate_langchain_response
-from scripts.mail_store import get_message_history
+from scripts.mail_store import get_message_history, store_ragfact, store_raglink
 from scripts.memory_store import store_memory, get_memory, list_keys, forget_key
 
 
@@ -78,6 +78,22 @@ def run_post_processing():
                         reply_text = f"🗑 Forgotten '{forget_keyname}'."
                     else:
                         reply_text = f"⚠️ No memory found for '{forget_keyname}'."
+
+                elif command.startswith("ragfact:"):
+                    fact_statement = command.split(":", 1)[1]
+                    if fact_statement:
+                        store_ragfact(sender, fact_statement)
+                        reply_text = "📘 RAG Fact received and stored."
+                    else:
+                        reply_text = "⚠️ No fact provided to store."
+
+                elif command.startswith("raglink:"):
+                    link_text = command.split(":", 1)[1].strip()
+                    if link_text:
+                        store_raglink(sender, link_text)
+                        reply_text = "🔗 RAG Link received and stored."
+                    else:
+                        reply_text = "⚠️ No link text provided to store."
 
                 else:
                     reply_text = generate_response(command)

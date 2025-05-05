@@ -18,6 +18,14 @@ def detect_commands(text):
                     parts = cmd.split(" ", 1)
                     if len(parts) > 1:
                         commands.append(f"tag:{parts[1]}")
+                elif cmd.startswith("ragfact "):
+                    parts = cmd.split(" ", 1)
+                    if len(parts) > 1:
+                        commands.append(f"ragfact:{parts[1]}")
+                elif cmd.startswith("raglink "):
+                    parts = cmd.split(" ", 1)
+                    if len(parts) > 1:
+                        commands.append(f"raglink:{parts[1]}")
                 else:
                     commands.append(cmd)
             break
@@ -35,8 +43,11 @@ def generate_response(command):
             "  /status - Check system status\n"
             "  /help   - List available commands\n"
             "  /mine   - Archive all your previously sent messages\n"
+            "  /recall - Review keys associated with your previous questions\n"
             "  /ask    - Query AI with context-aware response\n"
             "  /tag <label> - Assign a tag to this message and archive it\n"
+            "  /ragfact <statement> - Add public knowledge for AI training\n"
+            "  /raglink <text> - Submit linkable knowledge for embedding\n"
             "\n"
             "LangAgentMail v0.1.4 — Archiving and Tagging in progress.\n"
             "Email info@cook-il.us with questions or suggestions."

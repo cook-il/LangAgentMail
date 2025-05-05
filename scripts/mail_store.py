@@ -35,6 +35,29 @@ def init_db():
             );
         """)
 
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS links (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                sender TEXT NOT NULL,
+                name TEXT NOT NULL,
+                url TEXT NOT NULL,
+                tag TEXT,
+                created_at TEXT NOT NULL
+            );
+        """)
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS knowledge_base (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                contributor TEXT NOT NULL,
+                type TEXT NOT NULL,
+                content TEXT NOT NULL,
+                source TEXT,
+                created_at TEXT NOT NULL,
+                approved_by_admin BOOLEAN DEFAULT 0
+            );
+        """)
+
         conn.commit()
 
 def store_message(sender, subject, received_at, body):
@@ -148,3 +171,65 @@ def get_message_history(sender, limit=5):
         """, (f"%{sender}%", limit))
         rows = cursor.fetchall()
         return [r[0] for r in rows]
+
+def store_link(sender, name, url, tag=None):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO links (sender, name, url, tag, created_at)
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            sender,
+            name.strip(),
+            url.strip(),
+            tag,
+            datetime.now(timezone.utc).isoformat()
+        ))
+        conn.commit()
+
+def get_links(sender=None, tag=None):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        if sender and tag:
+            cursor.execute("""
+                SELECT id, name, url, tag, created_at
+                FROM links
+                WHERE sender = ? AND tag = ?
+                ORDER BY created_at DESC
+            """, (sender, tag))
+        elif sender:
+            cursor.execute("""
+                SELECT id, name, url, tag, created_at
+                FROM links
+                WHERE sender = ?
+                ORDER BY created_at DESC
+            """, (sender,))
+        else:
+            cursor.execute("""
+                SELECT id, name, url, tag, created_at
+                FROM links
+                ORDER BY created_at DESC
+            """)
+
+        return cursor.fetchall()
+
+
+def store_ragfact(contributor, content, source=None):
+    """Wrapper to store a ragfact entry."""
+    store_knowledge_fact(contributor, "fact", content, source)
+
+def store_raglink(contributor, content, source=None):
+    """Wrapper to store a raglink entry."""
+    store_knowledge_fact(contributor, "link", content, source)
+
+def store_knowledge_fact(contributor, fact_type, content, source=None):
+    """Insert a new fact or link into the knowledge_base table."""
+    timestamp = datetime.now(timezone.utc).isoformat()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO knowledge_base (contributor, type, content, source, created_at)
+            VALUES (?, ?, ?, ?, ?)
+        """, (contributor, fact_type, content, source, timestamp))
+        conn.commit()
